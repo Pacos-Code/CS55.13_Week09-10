@@ -1,13 +1,13 @@
 /**
- * HOME PAGE COMPONENT - Server-Side Rendered Restaurant Listings
+ * HOME PAGE COMPONENT - Server-Side Rendered Car Listings
  * 
- * This is the main page component that displays the restaurant listings.
+ * This is the main page component that displays the car listings.
  * It's configured for server-side rendering to ensure data is fetched and
  * rendered on the server before being sent to the client for better SEO and performance.
  */
 
-import RestaurantListings from "@/src/components/RestaurantListings.jsx";
-import { getRestaurants } from "@/src/lib/firebase/firestore.js";
+import CarListings from "@/src/components/CarListings.jsx";
+import { getCars } from "@/src/lib/firebase/firestore.js";
 import { getAuthenticatedAppForUser } from "@/src/lib/firebase/serverApp.js";
 import { getFirestore } from "firebase/firestore";
 
@@ -21,23 +21,23 @@ export const dynamic = "force-dynamic";
 export default async function Home(props) {
   // Extract search parameters from URL query string for server-side filtering
   // Using searchParams allows filtering to happen on the server-side, for example:
-  // ?city=London&category=Indian&sort=Review
+  // ?make=Honda&type=Sedan&sort=Review
   const searchParams = await props.searchParams;
   
   // Get authenticated Firebase server app instance for server-side data access
   const { firebaseServerApp } = await getAuthenticatedAppForUser();
   
-  // Fetch restaurants from Firestore using server-side authentication and search filters
-  const restaurants = await getRestaurants(
+  // Fetch cars from Firestore using server-side authentication and search filters
+  const cars = await getCars(
     getFirestore(firebaseServerApp),
     searchParams
   );
   
-  // Render the main page with restaurant listings component
+  // Render the main page with car listings component
   return (
     <main className="main__home">
-      <RestaurantListings
-        initialRestaurants={restaurants}
+      <CarListings
+        initialCars={cars}
         searchParams={searchParams}
       />
     </main>

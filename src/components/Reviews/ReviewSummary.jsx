@@ -1,29 +1,29 @@
 import { gemini20Flash, googleAI } from "@genkit-ai/googleai";
 import { genkit } from "genkit";
-import { getReviewsByRestaurantId } from "@/src/lib/firebase/firestore.js";
+import { getReviewsByCarId } from "@/src/lib/firebase/firestore.js";
 import { getAuthenticatedAppForUser } from "@/src/lib/firebase/serverApp";
 import { getFirestore } from "firebase/firestore";
 
 /**
- * GeminiSummary fetches reviews for a restaurant and generates a concise
+ * GeminiSummary fetches reviews for a car and generates a concise
  * one-sentence summary using Google Genkit with the Gemini model.
  * Falls back to an error message if summarization fails.
  *
- * @param {{ restaurantId: string }} props - Contains the restaurant ID.
+ * @param {{ carId: string }} props - Contains the car ID.
  * @returns {Promise<JSX.Element>} Summary block or error paragraph.
  */
-export async function GeminiSummary({ restaurantId }) {
+export async function GeminiSummary({ carId }) {
   const { firebaseServerApp } = await getAuthenticatedAppForUser();
-  const reviews = await getReviewsByRestaurantId(
+  const reviews = await getReviewsByCarId(
     getFirestore(firebaseServerApp),
-    restaurantId
+    carId
   );
 
   const reviewSeparator = "@";
   const prompt = `
-    Based on the following restaurant reviews, 
+    Based on the following car reviews, 
     where each review is separated by a '${reviewSeparator}' character, 
-    create a one-sentence summary of what people think of the restaurant. 
+    create a one-sentence summary of what people think of the car. 
 
     Here are the reviews: ${reviews.map((review) => review.text).join(reviewSeparator)}
   `;
@@ -45,7 +45,7 @@ export async function GeminiSummary({ restaurantId }) {
     const { text } = await ai.generate(prompt);
 
     return (
-      <div className="restaurant__review_summary">
+      <div className="car__review_summary">
         <p>{text}</p>
         <p>✨ Summarized with Gemini</p>
       </div>
@@ -63,7 +63,7 @@ export async function GeminiSummary({ restaurantId }) {
  */
 export function GeminiSummarySkeleton() {
   return (
-    <div className="restaurant__review_summary">
+    <div className="car__review_summary">
       <p>✨ Summarizing reviews with Gemini...</p>
     </div>
   );

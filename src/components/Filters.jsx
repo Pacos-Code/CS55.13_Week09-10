@@ -1,4 +1,4 @@
-// The filters shown on the restaurant listings page
+// The filters shown on the car listings page
 
 import Tag from "@/src/components/Tag.jsx";
 
@@ -38,7 +38,7 @@ export default function Filters({ filters, setFilters }) {
         <summary>
           <img src="/filter.svg" alt="filter" />
           <div>
-            <p>Restaurants</p>
+            <p>Cars</p>
             <p>Sorted by {filters.sort || "Rating"}</p>
           </div>
         </summary>
@@ -51,49 +51,75 @@ export default function Filters({ filters, setFilters }) {
           }}
         >
           <FilterSelect
-            label="Category"
+            label="Type"
             options={[
               "",
-              "Italian",
-              "Chinese",
-              "Japanese",
-              "Mexican",
-              "Indian",
-              "Mediterranean",
-              "Caribbean",
-              "Cajun",
-              "German",
-              "Russian",
-              "Cuban",
-              "Organic",
-              "Tapas",
+              "Sedan",
+              "SUV",
+              "Truck",
+              "Sports Car",
+              "Coupe",
+              "Hatchback",
+              "Minivan",
+              "Crossover",
+              "Convertible",
+              "Wagon",
             ]}
-            value={filters.category}
-            onChange={(event) => handleSelectionChange(event, "category")}
-            name="category"
+            value={filters.type}
+            onChange={(event) => handleSelectionChange(event, "type")}
+            name="type"
             icon="/food.svg"
           />
 
           <FilterSelect
-            label="City"
+            label="Make"
             options={[
               "",
-              "New York",
-              "Los Angeles",
-              "London",
-              "Paris",
-              "Tokyo",
-              "Mumbai",
-              "Dubai",
-              "Amsterdam",
-              "Seoul",
-              "Singapore",
-              "Istanbul",
+              "Toyota",
+              "Honda",
+              "Ford",
+              "Chevrolet",
+              "BMW",
+              "Mercedes-Benz",
+              "Audi",
+              "Nissan",
+              "Hyundai",
+              "Mazda",
+              "Volkswagen",
+              "Subaru",
+              "Kia",
+              "Lexus",
+              "Dodge",
+              "Jeep",
+              "Ram",
+              "Tesla",
+              "Volvo",
+              "Acura",
+              "Cadillac",
             ]}
-            value={filters.city}
-            onChange={(event) => handleSelectionChange(event, "city")}
-            name="city"
+            value={filters.make}
+            onChange={(event) => handleSelectionChange(event, "make")}
+            name="make"
             icon="/location.svg"
+          />
+
+          <FilterSelect
+            label="Country of Origin"
+            options={[
+              "",
+              "Japan",
+              "USA",
+              "Germany",
+              "South Korea",
+              "Italy",
+              "UK",
+              "France",
+              "Sweden",
+            ]}
+            value={filters.country}
+            onChange={(event) => handleSelectionChange(event, "country")}
+            name="country"
+            icon="/sortBy.svg"
           />
 
           <FilterSelect
@@ -121,8 +147,9 @@ export default function Filters({ filters, setFilters }) {
                 type="reset"
                 onClick={() => {
                   setFilters({
-                    city: "",
-                    category: "",
+                    make: "",
+                    type: "",
+                    country: "",
                     price: "",
                     sort: "",
                   });

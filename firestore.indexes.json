@@ -1,11 +1,11 @@
 {
   "indexes": [
     {
-      "collectionGroup": "restaurants",
+      "collectionGroup": "cars",
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "category",
+          "fieldPath": "type",
           "order": "ASCENDING"
         },
         {
@@ -15,11 +15,11 @@
       ]
     },
     {
-      "collectionGroup": "restaurants",
+      "collectionGroup": "cars",
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "category",
+          "fieldPath": "type",
           "order": "ASCENDING"
         },
         {
@@ -29,11 +29,11 @@
       ]
     },
     {
-      "collectionGroup": "restaurants",
+      "collectionGroup": "cars",
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "category",
+          "fieldPath": "type",
           "order": "ASCENDING"
         },
         {
@@ -43,11 +43,11 @@
       ]
     },
     {
-      "collectionGroup": "restaurants",
+      "collectionGroup": "cars",
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "city",
+          "fieldPath": "make",
           "order": "ASCENDING"
         },
         {
@@ -57,11 +57,11 @@
       ]
     },
     {
-      "collectionGroup": "restaurants",
+      "collectionGroup": "cars",
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "city",
+          "fieldPath": "make",
           "order": "ASCENDING"
         },
         {
@@ -71,11 +71,11 @@
       ]
     },
     {
-      "collectionGroup": "restaurants",
+      "collectionGroup": "cars",
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "city",
+          "fieldPath": "make",
           "order": "ASCENDING"
         },
         {
@@ -85,7 +85,49 @@
       ]
     },
     {
-      "collectionGroup": "restaurants",
+      "collectionGroup": "cars",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "country",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "avgRating",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "cars",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "country",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "numRatings",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "cars",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "country",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "price",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "cars",
       "queryScope": "COLLECTION",
       "fields": [
         {
@@ -99,7 +141,7 @@
       ]
     },
     {
-      "collectionGroup": "restaurants",
+      "collectionGroup": "cars",
       "queryScope": "COLLECTION",
       "fields": [
         {

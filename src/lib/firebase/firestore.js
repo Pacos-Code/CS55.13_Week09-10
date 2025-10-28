@@ -1,12 +1,12 @@
 /**
  * FIRESTORE DATABASE MODULE
  * 
- * This module provides all database operations for the restaurant application,
- * including CRUD operations for restaurants and reviews, real-time data subscriptions,
+ * This module provides all database operations for the car application,
+ * including CRUD operations for cars and reviews, real-time data subscriptions,
  * and data seeding functionality. It handles both server-side and client-side database access.
  */
 
-import { generateFakeRestaurantsAndReviews } from "@/src/lib/fakeRestaurants.js";
+import { generateFakeCarsAndReviews } from "@/src/lib/fakeCars.js";
 
 import {
   collection,
@@ -27,24 +27,24 @@ import {
 import { db } from "@/src/lib/firebase/clientApp";
 
 /**
- * Update the `photo` field of a restaurant document to reference a public image URL.
+ * Update the `photo` field of a car document to reference a public image URL.
  *
- * @param {string} restaurantId - Target restaurant document ID
+ * @param {string} carId - Target car document ID
  * @param {string} publicImageUrl - Publicly accessible image URL
  * @returns {Promise<void>}
  */
-export async function updateRestaurantImageReference(
-  restaurantId,
+export async function updateCarImageReference(
+  carId,
   publicImageUrl
 ) {
-  const restaurantRef = doc(collection(db, "restaurants"), restaurantId);
-  if (restaurantRef) {
-    await updateDoc(restaurantRef, { photo: publicImageUrl });
+  const carRef = doc(collection(db, "cars"), carId);
+  if (carRef) {
+    await updateDoc(carRef, { photo: publicImageUrl });
   }
 }
 
 /**
- * Atomically updates aggregate rating fields on a restaurant document and
+ * Atomically updates aggregate rating fields on a car document and
  * writes the individual rating document within a transaction.
  *
  * @param {import("firebase/firestore").Transaction} transaction
@@ -58,8 +58,8 @@ const updateWithRating = async (
   newRatingDocument,
   review
 ) => {
-  const restaurant = await transaction.get(docRef);
-  const data = restaurant.data();
+  const car = await transaction.get(docRef);
+  const data = car.data();
   const newNumRatings = data?.numRatings ? data.numRatings + 1 : 1;
   const newSumRating = (data?.sumRating || 0) + Number(review.rating);
   const newAverage = newSumRating / newNumRatings;
@@ -79,17 +79,17 @@ const updateWithRating = async (
 };
 
 /**
- * Add a review to a restaurant using a Firestore transaction, updating
+ * Add a review to a car using a Firestore transaction, updating
  * aggregate fields and inserting the new rating document.
  *
  * @param {import("firebase/firestore").Firestore} db - Firestore instance
- * @param {string} restaurantId - Target restaurant ID
+ * @param {string} carId - Target car ID
  * @param {{ rating: number, text: string, userId?: string }} review - Review payload
  * @returns {Promise<void>}
  */
-export async function addReviewToRestaurant(db, restaurantId, review) {
-  if (!restaurantId) {
-          throw new Error("No restaurant ID has been provided.");
+export async function addReviewToCar(db, carId, review) {
+  if (!carId) {
+          throw new Error("No car ID has been provided.");
   }
 
   if (!review) {
@@ -97,9 +97,9 @@ export async function addReviewToRestaurant(db, restaurantId, review) {
   }
 
   try {
-          const docRef = doc(collection(db, "restaurants"), restaurantId);
+          const docRef = doc(collection(db, "cars"), carId);
           const newRatingDocument = doc(
-                  collection(db, `restaurants/${restaurantId}/ratings`)
+                  collection(db, `cars/${carId}/ratings`)
           );
 
           // corrected line
@@ -108,26 +108,36 @@ export async function addReviewToRestaurant(db, restaurantId, review) {
           );
   } catch (error) {
           console.error(
-                  "There was an error adding the rating to the restaurant",
+                  "There was an error adding the rating to the car",
                   error
           );
           throw error;
   }
 }
+
+// Legacy export for backward compatibility during migration
+export async function addReviewToRestaurant(db, restaurantId, review) {
+  return addReviewToCar(db, restaurantId, review);
+}
+
 /**
  * Apply filtering and sorting parameters to a Firestore query
  * @param {Query} q - The base Firestore query
- * @param {Object} filters - Filtering options (category, city, price, sort)
+ * @param {Object} filters - Filtering options (type, make, country, price, sort)
  * @returns {Query} - Modified query with filters applied
  */
-function applyQueryFilters(q, { category, city, price, sort }) {
-  // Filter by restaurant category (e.g., "Indian", "Mexican")
-  if (category) {
-    q = query(q, where("category", "==", category));
+function applyQueryFilters(q, { type, make, country, price, sort }) {
+  // Filter by car type (e.g., "Sedan", "SUV", "Truck")
+  if (type) {
+    q = query(q, where("type", "==", type));
   }
-  // Filter by city location
-  if (city) {
-    q = query(q, where("city", "==", city));
+  // Filter by make/manufacturer
+  if (make) {
+    q = query(q, where("make", "==", make));
+  }
+  // Filter by country of origin
+  if (country) {
+    q = query(q, where("country", "==", country));
   }
   // Filter by price level (based on price string length: $, $$, $$$)
   if (price) {
@@ -143,14 +153,14 @@ function applyQueryFilters(q, { category, city, price, sort }) {
 }
 
 /**
- * Fetch restaurants from Firestore with optional filtering and sorting
+ * Fetch cars from Firestore with optional filtering and sorting
  * @param {Firestore} db - Firestore database instance (can be client or server)
- * @param {Object} filters - Filtering options (category, city, price, sort)
- * @returns {Array} - Array of restaurant objects with converted timestamps
+ * @param {Object} filters - Filtering options (type, make, country, price, sort)
+ * @returns {Array} - Array of car objects with converted timestamps
  */
-export async function getRestaurants(db = db, filters = {}) {
-  // Start with base query for restaurants collection
-  let q = query(collection(db, "restaurants"));
+export async function getCars(db = db, filters = {}) {
+  // Start with base query for cars collection
+  let q = query(collection(db, "cars"));
 
   // Apply filters and sorting
   q = applyQueryFilters(q, filters);
@@ -167,20 +177,25 @@ export async function getRestaurants(db = db, filters = {}) {
   });
 }
 
+// Legacy export for backward compatibility during migration
+export async function getRestaurants(db = db, filters = {}) {
+  return getCars(db, filters);
+}
+
 /**
- * Set up real-time listener for restaurants with optional filtering
- * @param {Function} cb - Callback function to receive restaurant updates
- * @param {Object} filters - Filtering options (category, city, price, sort)
+ * Set up real-time listener for cars with optional filtering
+ * @param {Function} cb - Callback function to receive car updates
+ * @param {Object} filters - Filtering options (type, make, country, price, sort)
  * @returns {Function} - Unsubscribe function to stop listening
  */
-export function getRestaurantsSnapshot(cb, filters = {}) {
+export function getCarsSnapshot(cb, filters = {}) {
   if (typeof cb !== "function") {
     console.log("Error: The callback parameter is not a function");
     return;
   }
 
   // Create filtered query for real-time updates
-  let q = query(collection(db, "restaurants"));
+  let q = query(collection(db, "cars"));
   q = applyQueryFilters(q, filters);
 
   // Set up real-time listener that triggers on data changes
@@ -195,24 +210,29 @@ export function getRestaurantsSnapshot(cb, filters = {}) {
       };
     });
 
-    // Call the callback with updated restaurant data
+    // Call the callback with updated car data
     cb(results);
   });
 }
 
+// Legacy export for backward compatibility during migration
+export function getRestaurantsSnapshot(cb, filters = {}) {
+  return getCarsSnapshot(cb, filters);
+}
+
 /**
- * Fetch a single restaurant by its ID
+ * Fetch a single car by its ID
  * @param {Firestore} db - Firestore database instance
- * @param {string} restaurantId - The ID of the restaurant to fetch
- * @returns {Object|null} - Restaurant object with converted timestamp, or null if not found
+ * @param {string} carId - The ID of the car to fetch
+ * @returns {Object|null} - Car object with converted timestamp, or null if not found
  */
-export async function getRestaurantById(db, restaurantId) {
-  if (!restaurantId) {
-    console.log("Error: Invalid ID received: ", restaurantId);
+export async function getCarById(db, carId) {
+  if (!carId) {
+    console.log("Error: Invalid ID received: ", carId);
     return;
   }
   
-  const docRef = doc(db, "restaurants", restaurantId);
+  const docRef = doc(db, "cars", carId);
   const docSnap = await getDoc(docRef);
   
   return {
@@ -222,25 +242,50 @@ export async function getRestaurantById(db, restaurantId) {
   };
 }
 
+// Legacy export for backward compatibility during migration
+export async function getRestaurantById(db, restaurantId) {
+  return getCarById(db, restaurantId);
+}
+
+export function getCarSnapshotById(carId, cb) {
+  if (!carId) {
+    console.log("Error: Invalid carId received: ", carId);
+    return;
+  }
+
+  const docRef = doc(db, "cars", carId);
+  
+  return onSnapshot(docRef, (docSnap) => {
+    if (docSnap.exists()) {
+      const data = {
+        id: docSnap.id,
+        ...docSnap.data(),
+        timestamp: docSnap.data().timestamp.toDate(),
+      };
+      cb(data);
+    }
+  });
+}
+
 export function getRestaurantSnapshotById(restaurantId, cb) {
-  return;
+  return getCarSnapshotById(restaurantId, cb);
 }
 
 /**
- * Fetch all reviews for a specific restaurant, ordered by most recent first
+ * Fetch all reviews for a specific car, ordered by most recent first
  * @param {Firestore} db - Firestore database instance
- * @param {string} restaurantId - The ID of the restaurant to fetch reviews for
+ * @param {string} carId - The ID of the car to fetch reviews for
  * @returns {Array} - Array of review objects with converted timestamps
  */
-export async function getReviewsByRestaurantId(db, restaurantId) {
-  if (!restaurantId) {
-    console.log("Error: Invalid restaurantId received: ", restaurantId);
+export async function getReviewsByCarId(db, carId) {
+  if (!carId) {
+    console.log("Error: Invalid carId received: ", carId);
     return;
   }
 
   // Query reviews subcollection, ordered by timestamp (newest first)
   const q = query(
-    collection(db, "restaurants", restaurantId, "ratings"),
+    collection(db, "cars", carId, "ratings"),
     orderBy("timestamp", "desc")
   );
 
@@ -256,21 +301,26 @@ export async function getReviewsByRestaurantId(db, restaurantId) {
   });
 }
 
+// Legacy export for backward compatibility during migration
+export async function getReviewsByRestaurantId(db, restaurantId) {
+  return getReviewsByCarId(db, restaurantId);
+}
+
 /**
- * Set up real-time listener for reviews of a specific restaurant
- * @param {string} restaurantId - The ID of the restaurant to listen for reviews
+ * Set up real-time listener for reviews of a specific car
+ * @param {string} carId - The ID of the car to listen for reviews
  * @param {Function} cb - Callback function to receive review updates
  * @returns {Function} - Unsubscribe function to stop listening
  */
-export function getReviewsSnapshotByRestaurantId(restaurantId, cb) {
-  if (!restaurantId) {
-    console.log("Error: Invalid restaurantId received: ", restaurantId);
+export function getReviewsSnapshotByCarId(carId, cb) {
+  if (!carId) {
+    console.log("Error: Invalid carId received: ", carId);
     return;
   }
 
   // Query reviews subcollection for real-time updates, ordered by timestamp
   const q = query(
-    collection(db, "restaurants", restaurantId, "ratings"),
+    collection(db, "cars", carId, "ratings"),
     orderBy("timestamp", "desc")
   );
   
@@ -290,27 +340,32 @@ export function getReviewsSnapshotByRestaurantId(restaurantId, cb) {
   });
 }
 
+// Legacy export for backward compatibility during migration
+export function getReviewsSnapshotByRestaurantId(restaurantId, cb) {
+  return getReviewsSnapshotByCarId(restaurantId, cb);
+}
+
 /**
- * Seed the database with fake restaurant and review data for testing/demo purposes
+ * Seed the database with fake car and review data for testing/demo purposes
  * This function generates sample data and adds it to the Firestore database
  */
-export async function addFakeRestaurantsAndReviews() {
+export async function addFakeCarsAndReviews() {
   // Generate fake data using the utility function
-  const data = await generateFakeRestaurantsAndReviews();
+  const data = await generateFakeCarsAndReviews();
   
-  // Process each restaurant and its associated reviews
-  for (const { restaurantData, ratingsData } of data) {
+  // Process each car and its associated reviews
+  for (const { carData, ratingsData } of data) {
     try {
-      // Add the restaurant document to the restaurants collection
+      // Add the car document to the cars collection
       const docRef = await addDoc(
-        collection(db, "restaurants"),
-        restaurantData
+        collection(db, "cars"),
+        carData
       );
 
-      // Add each review as a subdocument in the restaurant's ratings subcollection
+      // Add each review as a subdocument in the car's ratings subcollection
       for (const ratingData of ratingsData) {
         await addDoc(
-          collection(db, "restaurants", docRef.id, "ratings"),
+          collection(db, "cars", docRef.id, "ratings"),
           ratingData
         );
       }
@@ -319,4 +374,9 @@ export async function addFakeRestaurantsAndReviews() {
       console.error("Error adding document: ", e);
     }
   }
+}
+
+// Legacy export for backward compatibility during migration
+export async function addFakeRestaurantsAndReviews() {
+  return addFakeCarsAndReviews();
 }

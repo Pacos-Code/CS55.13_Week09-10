@@ -7,7 +7,7 @@ import RatingPicker from "@/src/components/RatingPicker.jsx";
 import { handleReviewFormSubmission } from "@/src/app/actions.js";
 
 /**
- * ReviewDialog component renders a modal for submitting a restaurant review.
+ * ReviewDialog component renders a modal for submitting a car review.
  * It uses a form action (Server Action) to submit the review and hides itself on submit.
  *
  * @param {Object} props
@@ -16,7 +16,7 @@ import { handleReviewFormSubmission } from "@/src/app/actions.js";
  * @param {{ rating: number, text: string }} props.review - Current review state.
  * @param {(value: string|number, name: "rating"|"text") => void} props.onChange - Change handler for review inputs.
  * @param {string} props.userId - ID of the user submitting the review.
- * @param {string} props.id - Restaurant ID being reviewed.
+ * @param {string} props.id - Car ID being reviewed.
  * @returns {JSX.Element}
  */
 const ReviewDialog = ({
@@ -71,7 +71,7 @@ const ReviewDialog = ({
             />
           </p>
 
-          <input type="hidden" name="restaurantId" value={id} />
+          <input type="hidden" name="carId" value={id} />
           <input type="hidden" name="userId" value={userId} />
         </article>
         <footer>
