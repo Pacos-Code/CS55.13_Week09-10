@@ -67,7 +67,11 @@ export default function Header({ initialUser }) {
   const handleAddFakeCars = async (event) => {
     event.preventDefault();
     try {
-      await addFakeCarsAndReviews();
+      if (!user?.uid) {
+        alert("Please sign in before seeding data.");
+        return;
+      }
+      await addFakeCarsAndReviews(user.uid);
       alert("Database populated with all makes and models successfully!");
     } catch (error) {
       console.error("Error adding fake cars:", error);

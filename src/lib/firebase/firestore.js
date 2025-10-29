@@ -315,7 +315,7 @@ export function getReviewsSnapshotByCarId(carId, cb) {
  * Seed the database with fake car and review data for testing/demo purposes
  * This function generates sample data and adds it to the Firestore database
  */
-export async function addFakeCarsAndReviews() {
+export async function addFakeCarsAndReviews(userId) {
   // Generate fake data using the utility function
   const data = await generateFakeCarsAndReviews();
   
@@ -330,9 +330,11 @@ export async function addFakeCarsAndReviews() {
 
       // Add each review as a subdocument in the car's ratings subcollection
       for (const ratingData of ratingsData) {
+        // Ensure userId matches authenticated user to satisfy security rules
+        const reviewToWrite = { ...ratingData, userId };
         await addDoc(
           collection(db, "cars", docRef.id, "ratings"),
-          ratingData
+          reviewToWrite
         );
       }
     } catch (e) {
