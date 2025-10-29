@@ -82,7 +82,7 @@ export default function Header({ initialUser }) {
   return (
     <header>
       <Link href="/" className="logo">
-        <img src="/friendly-eats.svg" alt="AutoReviews" />
+        <img src="/logo.png" alt="AutoReviews"/>
         Auto Reviews
       </Link>
       {user ? (
@@ -102,11 +102,11 @@ export default function Header({ initialUser }) {
               <ul>
                 <li>{user.displayName}</li>
 
-                <li>
+               {/* <li>
                   <a href="#" onClick={handleAddFakeCars}>
                     Add sample cars
                   </a>
-                </li>
+                </li> */}
 
                 <li>
                   <a href="#" onClick={handleSignOut}>

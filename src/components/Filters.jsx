@@ -68,7 +68,7 @@ export default function Filters({ filters, setFilters }) {
             value={filters.type}
             onChange={(event) => handleSelectionChange(event, "type")}
             name="type"
-            icon="/food.svg"
+            icon="/sortBy.svg"
           />
 
           <FilterSelect
@@ -84,7 +84,7 @@ export default function Filters({ filters, setFilters }) {
             value={filters.make}
             onChange={(event) => handleSelectionChange(event, "make")}
             name="make"
-            icon="/location.svg"
+            icon="/sortBy.svg"
           />
 
           <FilterSelect
@@ -98,7 +98,7 @@ export default function Filters({ filters, setFilters }) {
             value={filters.country}
             onChange={(event) => handleSelectionChange(event, "country")}
             name="country"
-            icon="/sortBy.svg"
+            icon="/location.svg"
           />
 
           <FilterSelect

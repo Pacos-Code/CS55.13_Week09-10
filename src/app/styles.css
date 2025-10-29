@@ -97,7 +97,7 @@ footer {
 }
 
 header {
-  background-color: rgb(56 85 116);
+  background-color: #3614CF;
   color: white;
   display: flex;
   justify-content: space-between;
@@ -129,6 +129,7 @@ header {
 .logo {
   display: flex;
   align-items: center;
+  height: 2rem;
 
   & img {
     margin-inline-end: 10px;
