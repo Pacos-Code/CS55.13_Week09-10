@@ -6,10 +6,30 @@ import {
 import { randomData, getAllMakes, getModelsForMake } from "@/src/lib/randomData.js";
 
 import { Timestamp } from "firebase/firestore";
+import { ref, getDownloadURL } from "firebase/storage";
+import { storage } from "@/src/lib/firebase/clientApp";
 
 export async function generateFakeCarsAndReviews() {
   const data = [];
   const makes = getAllMakes();
+
+  // Resolve logo URLs for each make once, using Firebase Storage
+  const logoUrlByMake = Object.fromEntries(
+    await Promise.all(
+      makes.map(async (make) => {
+        const storagePath = randomData.makeToLogoUrl[make];
+        try {
+          if (storagePath) {
+            const url = await getDownloadURL(ref(storage, storagePath));
+            return [make, url];
+          }
+        } catch (error) {
+          console.warn(`Failed to resolve logo for ${make}:`, error);
+        }
+        return [make, undefined];
+      })
+    )
+  );
 
   // Generate cars for all makes and models
   for (const make of makes) {
@@ -67,7 +87,7 @@ export async function generateFakeCarsAndReviews() {
           0
         ),
         price: randomNumberBetween(1, 4),
-        photo: randomData.makeToLogoUrl[make] || "logos/logo.png",
+        photo: logoUrlByMake[make] || randomData.makeToLogoUrl[make] || "logos/logo.png",
         timestamp: carTimestamp,
       };
 
