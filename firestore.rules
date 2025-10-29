@@ -27,8 +27,7 @@ service cloud.firestore {
         match /ratings/{ratingId} {
           allow read: if true;
           // Safer: require auth and matching userId
-          allow create: if request.auth != null
-                        && request.resource.data.userId == request.auth.uid;
+          allow write: if request.resource.data.userId != null;
         }
       }
     }

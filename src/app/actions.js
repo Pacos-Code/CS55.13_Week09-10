@@ -10,8 +10,11 @@ import { getFirestore } from "firebase/firestore";
 // use with caution.
 // https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions
 export async function handleReviewFormSubmission(data) {
-    const { app, currentUser } = await getAuthenticatedAppForUser();
-    const db = getFirestore(app);
+    const { firebaseServerApp, currentUser } = await getAuthenticatedAppForUser();
+    if (!currentUser?.uid) {
+        throw new Error("Not authenticated. Please sign in to submit a review.");
+    }
+    const db = getFirestore(firebaseServerApp);
 
     await addReviewToCar(db, data.get("carId"), {
             text: data.get("text"),
