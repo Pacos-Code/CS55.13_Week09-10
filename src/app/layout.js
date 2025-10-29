@@ -17,7 +17,9 @@ export default async function RootLayout({ children }) {
     <html lang="en">
       <body>
         <Header initialUser={currentUser?.toJSON()} />
-
+        <section className="title-banner">
+          <div className="title-banner__inner">Auto Reviews</div>
+        </section>
         <main>{children}</main>
       </body>
     </html>
