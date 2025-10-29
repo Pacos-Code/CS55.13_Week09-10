@@ -3,30 +3,13 @@
 // menu in the top right corner and select "Add sample cars"
 
 export const randomData = {
-  // Car makes with their corresponding models
+  // Car makes with their corresponding models (reduced to 5 makes)
   carMakeModels: {
-    "Toyota": ["Camry", "Corolla", "RAV4", "Highlander", "Prius", "4Runner", "Tacoma", "Tundra"],
-    "Honda": ["Accord", "Civic", "CR-V", "Pilot", "Odyssey", "Ridgeline", "Passport", "HR-V"],
-    "Ford": ["F-150", "Explorer", "Edge", "Mustang", "Escape", "Bronco", "Ranger", "Expedition"],
-    "Chevrolet": ["Silverado", "Equinox", "Tahoe", "Suburban", "Malibu", "Traverse", "Camaro", "Blazer"],
     "BMW": ["3 Series", "5 Series", "X5", "X3", "X7", "M3", "M5", "7 Series"],
-    "Mercedes-Benz": ["C-Class", "E-Class", "S-Class", "GLE", "GLC", "GLS", "A-Class", "CLA"],
-    "Audi": ["A4", "Q5", "Q7", "A6", "Q3", "e-tron", "TT", "R8"],
-    "Nissan": ["Altima", "Sentra", "Rogue", "Pathfinder", "Maxima", "Murano", "Frontier", "Armada"],
-    "Hyundai": ["Elantra", "Sonata", "Tucson", "Santa Fe", "Palisade", "Kona", "Venue", "Accent"],
+    "Ford": ["F-150", "Explorer", "Edge", "Mustang", "Escape", "Bronco", "Ranger", "Expedition"],
     "Mazda": ["CX-5", "Mazda3", "CX-9", "CX-50", "MX-5", "Mazda6", "CX-30", "CX-3"],
-    "Volkswagen": ["Jetta", "Passat", "Atlas", "Tiguan", "Golf", "Arteon", "ID.4", "Touareg"],
-    "Subaru": ["Outback", "Forester", "Crosstrek", "Impreza", "Ascent", "Legacy", "WRX", "BRZ"],
-    "Kia": ["Sorento", "Telluride", "Optima", "Soul", "Sportage", "Carnival", "Forte", "Rio"],
-    "Lexus": ["RX", "ES", "NX", "GX", "LX", "IS", "LS", "UX"],
-    "Dodge": ["Charger", "Challenger", "Durango", "Journey", "Ram 1500", "Grand Caravan"],
-    "Jeep": ["Grand Cherokee", "Wrangler", "Cherokee", "Compass", "Renegade", "Gladiator"],
-    "Tesla": ["Model 3", "Model Y", "Model S", "Model X"],
-    "Volvo": ["XC90", "XC60", "XC40", "S60", "S90", "V60", "V90"],
-    "Acura": ["MDX", "RDX", "TLX", "ILX", "Integra"],
-    "Cadillac": ["Escalade", "XT5", "XT4", "CT5", "Lyriq"],
-    "Ram": ["1500", "2500", "3500", "ProMaster"],
-    "GMC": ["Sierra", "Yukon", "Acadia", "Terrain", "Canyon"]
+    "Porsche": ["911", "Cayenne", "Macan", "Panamera", "Boxster", "Cayman", "Taycan"],
+    "Toyota": ["Camry", "Corolla", "RAV4", "Highlander", "Prius", "4Runner", "Tacoma", "Tundra"]
   },
   
   carTypes: [
@@ -42,43 +25,31 @@ export const randomData = {
     "Wagon"
   ],
   
-  // Car make to country mapping
+  // Car make to country mapping (reduced to 5 makes)
   makeToCountry: {
-    "Toyota": "Japan",
-    "Honda": "Japan",
-    "Nissan": "Japan",
-    "Mazda": "Japan",
-    "Subaru": "Japan",
-    "Acura": "Japan",
-    "Lexus": "Japan",
-    "Infiniti": "Japan",
-    "Ford": "USA",
-    "Chevrolet": "USA",
-    "Dodge": "USA",
-    "Jeep": "USA",
-    "Ram": "USA",
-    "GMC": "USA",
-    "Cadillac": "USA",
-    "Lincoln": "USA",
-    "Buick": "USA",
-    "Chrysler": "USA",
-    "Tesla": "USA",
     "BMW": "Germany",
-    "Mercedes-Benz": "Germany",
-    "Audi": "Germany",
-    "Volkswagen": "Germany",
-    "Hyundai": "South Korea",
-    "Kia": "South Korea",
-    "Genesis": "South Korea",
-    "Volvo": "Sweden",
-    "Alfa Romeo": "Italy",
-    "MINI": "UK",
-    "Mitsubishi": "Japan"
+    "Ford": "USA",
+    "Mazda": "Japan",
+    "Porsche": "Germany",
+    "Toyota": "Japan"
+  },
+  
+  // Car make to Firebase Storage logo URL mapping
+  // IMPORTANT: After uploading logo images to Firebase Storage at paths like "logos/bmw.png",
+  // you need to get the download URLs from Firebase Console and replace these paths with
+  // full URLs. Example: "https://firebasestorage.googleapis.com/v0/b/YOUR-BUCKET/o/logos%2Fbmw.png?alt=media&token=..."
+  // Or you can use getDownloadURL() from Firebase Storage SDK to generate these URLs programmatically.
+  makeToLogoUrl: {
+    "BMW": "logos/bmw.png",
+    "Ford": "logos/ford.png",
+    "Mazda": "logos/mazda.png",
+    "Porsche": "logos/porsche.png",
+    "Toyota": "logos/toyota.png"
   },
   
   carReviews: [
     { text: "Excellent fuel economy and extremely reliable. Great daily driver!", rating: 5 },
-   { text: "Love the performance and handling. Perfect for my commute.", rating: 5 },
+    { text: "Love the performance and handling. Perfect for my commute.", rating: 5 },
     { text: "Very comfortable ride and spacious interior. Family loves it!", rating: 5 },
     { text: "Outstanding reliability, no major issues after 3 years.", rating: 5 },
     { text: "Great value for the money. Modern features and good resale value.", rating: 5 },

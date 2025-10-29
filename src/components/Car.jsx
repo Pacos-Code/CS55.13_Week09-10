@@ -8,14 +8,12 @@ import dynamic from "next/dynamic";
 import { getCarSnapshotById } from "@/src/lib/firebase/firestore.js";
 import { useUser } from "@/src/lib/getUser";
 import CarDetails from "@/src/components/CarDetails.jsx";
-import { updateCarImage } from "@/src/lib/firebase/storage.js";
 
 const ReviewDialog = dynamic(() => import("@/src/components/ReviewDialog.jsx"));
 
 /**
  * Car component displays a single car page with details,
- * live updates via Firestore snapshot, optional review dialog for logged-in users,
- * and image upload handling that persists to Firebase Storage and Firestore.
+ * live updates via Firestore snapshot, and optional review dialog for logged-in users.
  *
  * @param {Object} props
  * @param {string} props.id - Car ID.
@@ -44,16 +42,6 @@ export default function Car({
     setReview({ ...review, [name]: value });
   };
 
-  async function handleCarImage(target) {
-    const image = target.files ? target.files[0] : null;
-    if (!image) {
-      return;
-    }
-
-    const imageURL = await updateCarImage(id, image);
-    setCarDetails({ ...carDetails, photo: imageURL });
-  }
-
   const handleClose = () => {
     setIsOpen(false);
     setReview({ rating: 0, text: "" });
@@ -70,7 +58,6 @@ export default function Car({
       <CarDetails
         car={carDetails}
         userId={userId}
-        handleCarImage={handleCarImage}
         setIsOpen={setIsOpen}
         isOpen={isOpen}
       >

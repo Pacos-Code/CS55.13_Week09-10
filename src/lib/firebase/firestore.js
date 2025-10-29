@@ -115,11 +115,6 @@ export async function addReviewToCar(db, carId, review) {
   }
 }
 
-// Legacy export for backward compatibility during migration
-export async function addReviewToRestaurant(db, restaurantId, review) {
-  return addReviewToCar(db, restaurantId, review);
-}
-
 /**
  * Apply filtering and sorting parameters to a Firestore query
  * @param {Query} q - The base Firestore query
@@ -177,11 +172,6 @@ export async function getCars(db = db, filters = {}) {
   });
 }
 
-// Legacy export for backward compatibility during migration
-export async function getRestaurants(db = db, filters = {}) {
-  return getCars(db, filters);
-}
-
 /**
  * Set up real-time listener for cars with optional filtering
  * @param {Function} cb - Callback function to receive car updates
@@ -215,11 +205,6 @@ export function getCarsSnapshot(cb, filters = {}) {
   });
 }
 
-// Legacy export for backward compatibility during migration
-export function getRestaurantsSnapshot(cb, filters = {}) {
-  return getCarsSnapshot(cb, filters);
-}
-
 /**
  * Fetch a single car by its ID
  * @param {Firestore} db - Firestore database instance
@@ -242,11 +227,6 @@ export async function getCarById(db, carId) {
   };
 }
 
-// Legacy export for backward compatibility during migration
-export async function getRestaurantById(db, restaurantId) {
-  return getCarById(db, restaurantId);
-}
-
 export function getCarSnapshotById(carId, cb) {
   if (!carId) {
     console.log("Error: Invalid carId received: ", carId);
@@ -265,10 +245,6 @@ export function getCarSnapshotById(carId, cb) {
       cb(data);
     }
   });
-}
-
-export function getRestaurantSnapshotById(restaurantId, cb) {
-  return getCarSnapshotById(restaurantId, cb);
 }
 
 /**
@@ -299,11 +275,6 @@ export async function getReviewsByCarId(db, carId) {
       timestamp: doc.data().timestamp.toDate(),
     };
   });
-}
-
-// Legacy export for backward compatibility during migration
-export async function getReviewsByRestaurantId(db, restaurantId) {
-  return getReviewsByCarId(db, restaurantId);
 }
 
 /**
@@ -340,11 +311,6 @@ export function getReviewsSnapshotByCarId(carId, cb) {
   });
 }
 
-// Legacy export for backward compatibility during migration
-export function getReviewsSnapshotByRestaurantId(restaurantId, cb) {
-  return getReviewsSnapshotByCarId(restaurantId, cb);
-}
-
 /**
  * Seed the database with fake car and review data for testing/demo purposes
  * This function generates sample data and adds it to the Firestore database
@@ -374,9 +340,4 @@ export async function addFakeCarsAndReviews() {
       console.error("Error adding document: ", e);
     }
   }
-}
-
-// Legacy export for backward compatibility during migration
-export async function addFakeRestaurantsAndReviews() {
-  return addFakeCarsAndReviews();
 }

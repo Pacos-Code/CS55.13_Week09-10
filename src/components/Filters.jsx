@@ -75,27 +75,11 @@ export default function Filters({ filters, setFilters }) {
             label="Make"
             options={[
               "",
-              "Toyota",
-              "Honda",
-              "Ford",
-              "Chevrolet",
               "BMW",
-              "Mercedes-Benz",
-              "Audi",
-              "Nissan",
-              "Hyundai",
+              "Ford",
               "Mazda",
-              "Volkswagen",
-              "Subaru",
-              "Kia",
-              "Lexus",
-              "Dodge",
-              "Jeep",
-              "Ram",
-              "Tesla",
-              "Volvo",
-              "Acura",
-              "Cadillac",
+              "Porsche",
+              "Toyota",
             ]}
             value={filters.make}
             onChange={(event) => handleSelectionChange(event, "make")}
@@ -110,11 +94,6 @@ export default function Filters({ filters, setFilters }) {
               "Japan",
               "USA",
               "Germany",
-              "South Korea",
-              "Italy",
-              "UK",
-              "France",
-              "Sweden",
             ]}
             value={filters.country}
             onChange={(event) => handleSelectionChange(event, "country")}

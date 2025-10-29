@@ -63,6 +63,18 @@ export default function Header({ initialUser }) {
     signInWithGoogle();
   };
 
+  // Handle adding fake cars and reviews
+  const handleAddFakeCars = async (event) => {
+    event.preventDefault();
+    try {
+      await addFakeCarsAndReviews();
+      alert("Database populated with all makes and models successfully!");
+    } catch (error) {
+      console.error("Error adding fake cars:", error);
+      alert("Error adding fake cars. Check console for details.");
+    }
+  };
+
   return (
     <header>
       <Link href="/" className="logo">
@@ -87,7 +99,7 @@ export default function Header({ initialUser }) {
                 <li>{user.displayName}</li>
 
                 <li>
-                  <a href="#" onClick={addFakeCarsAndReviews}>
+                  <a href="#" onClick={handleAddFakeCars}>
                     Add sample cars
                   </a>
                 </li>

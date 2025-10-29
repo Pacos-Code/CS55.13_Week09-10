@@ -30,10 +30,6 @@ export async function updateCarImage(carId, image) {
     }
   }
 
-// Legacy export for backward compatibility during migration
-export async function updateRestaurantImage(restaurantId, image) {
-  return updateCarImage(restaurantId, image);
-}
   
 /**
  * Upload an image file to Firebase Storage and return its download URL.

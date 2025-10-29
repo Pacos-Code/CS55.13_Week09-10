@@ -1,4 +1,4 @@
-// This component shows car metadata, and offers some actions to the user like uploading a new car image, and adding a review.
+// This component shows car metadata and offers actions to the user like adding a review.
 
 import React from "react";
 import renderStars from "@/src/components/Stars.jsx";
@@ -6,7 +6,6 @@ import renderStars from "@/src/components/Stars.jsx";
 const CarDetails = ({
   car,
   userId,
-  handleCarImage,
   setIsOpen,
   isOpen,
   children,
@@ -26,20 +25,6 @@ const CarDetails = ({
             src="/review.svg"
           />
         )}
-        <label
-          onChange={(event) => handleCarImage(event.target)}
-          htmlFor="upload-image"
-          className="add"
-        >
-          <input
-            name=""
-            type="file"
-            id="upload-image"
-            className="file-input hidden w-full h-full"
-          />
-
-          <img className="add-image" src="/add.svg" alt="Add image" />
-        </label>
       </div>
 
       <div className="details__container">
