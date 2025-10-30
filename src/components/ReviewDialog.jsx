@@ -89,6 +89,7 @@ const ReviewDialog = ({
             />
           </p>
 
+          <h4>Reviewer photo (optional)</h4>
           <p>
             <input
               type="file"

@@ -13,7 +13,7 @@ import {
   GeminiSummarySkeleton,
 } from "@/src/components/Reviews/ReviewSummary";
 import { getFirestore } from "firebase/firestore";
-import ReviewerGallery from "@/src/components/Reviews/ReviewerGallery";
+import ReviewerGalleryClient from "@/src/components/Reviews/ReviewerGalleryClient";
 
 export default async function Home(props) {
   // This is a server component, we can access URL
@@ -43,9 +43,7 @@ export default async function Home(props) {
       >
         <ReviewsList carId={params.id} userId={currentUser?.uid || ""} />
       </Suspense>
-      <Suspense fallback={null}>
-        <ReviewerGallery carId={params.id} />
-      </Suspense>
+      <ReviewerGalleryClient carId={params.id} />
     </main>
   );
 }

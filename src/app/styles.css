@@ -147,6 +147,9 @@ header {
     border-width: 2px;
     border-style: solid;
     margin-right: 10px;
+    width: 28px;
+    height: 28px;
+    object-fit: cover;
   }
 }
 
