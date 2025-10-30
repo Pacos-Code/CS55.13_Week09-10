@@ -1,5 +1,8 @@
-import React from "react";
-
+import { gemini20Flash, googleAI } from "@genkit-ai/googleai";
+import { genkit } from "genkit";
+import { getReviewsByCarId } from "@/src/lib/firebase/firestore.js";
+import { getAuthenticatedAppForUser } from "@/src/lib/firebase/serverApp";
+import { getFirestore } from "firebase/firestore";
 /**
  * Temporary stub: Gemini summary disabled to avoid requiring GEMINI_API_KEY in hosting.
  * Keeps the same API so the rest of the app works unchanged.
@@ -46,4 +49,17 @@ export async function GeminiSummary({ carId }) {
     console.error(e);
     return <p>Error summarizing reviews.</p>;
   }
+}
+/**
+ * GeminiSummarySkeleton renders a lightweight placeholder while the
+ * summary is being generated server-side.
+ *
+ * @returns {JSX.Element}
+ */
+export function GeminiSummarySkeleton() {
+  return (
+    <div className="car__review_summary">
+      <p>✨ Summarizing reviews with Gemini...</p>
+    </div>
+  );
 }
