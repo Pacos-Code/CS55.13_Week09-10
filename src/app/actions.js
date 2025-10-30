@@ -19,6 +19,7 @@ export async function handleReviewFormSubmission(data) {
     await addReviewToCar(db, data.get("carId"), {
             text: data.get("text"),
             rating: data.get("rating"),
+            photoUrl: data.get("photoUrl") || "",
 
             // This came from a hidden form field.
             //Instead of letting userid be passed from client in hidden form field, we use the server-side firebase auth result for currentuser.uid

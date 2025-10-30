@@ -45,3 +45,29 @@ export async function updateCarImage(carId, image) {
   
     return await getDownloadURL(newImageRef);
   }
+
+/**
+ * Upload a single reviewer image to Firebase Storage under userUpload/{userId}/{carId}/
+ * and return its public download URL.
+ *
+ * @param {string} userId
+ * @param {string} carId
+ * @param {{ name: string }} image
+ * @returns {Promise<string>}
+ */
+export async function uploadUserReviewImage(userId, carId, image) {
+  if (!userId) {
+    throw new Error("No user ID has been provided.");
+  }
+  if (!carId) {
+    throw new Error("No car ID has been provided.");
+  }
+  if (!image || !image.name) {
+    throw new Error("A valid image has not been provided.");
+  }
+
+  const filePath = `userUpload/${userId}/${carId}/${image.name}`;
+  const imageRef = ref(storage, filePath);
+  await uploadBytesResumable(imageRef, image);
+  return await getDownloadURL(imageRef);
+}
