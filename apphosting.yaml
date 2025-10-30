@@ -5,4 +5,6 @@ outputDirectory: ".next"
 runConfig:
   minInstances: 0
   maxInstances: 4
-
+env:
+  - variable: GEMINI_API_KEY
+    secret: GEMINI_API_KEY
